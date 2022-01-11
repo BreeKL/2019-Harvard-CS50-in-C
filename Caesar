@@ -1,0 +1,81 @@
+/**
+ * This is a program to create a caesar shift 
+ * cypher based on user input in the command line
+ **/
+
+#include <cs50.h>
+#include <stdio.h>
+#include <math.h>
+#include <string.h>
+
+int main(int argc, string argv[])
+{
+    if (argc == 2)
+    {
+        int i = 0;
+        int key = 0;
+                
+        for (i = 0; i < 4; i++)
+        {
+            int a = argv[1][i];
+            
+            if (a == '\0') //break loop at end of key
+            {
+                break;
+            }
+            
+            if (i >= 1) //to correctly place digits in the ten's or hundred's place
+            {
+                key = (key * 10);
+            }
+
+            if ((a >= '0') && (a <= '9')) //to make sure entered key is made of digits and assign to "key"
+            {
+                key = (key + (a - 48));
+            }
+                       
+            else 
+            {
+                printf("Usage: ./caesar key\n");
+                return 1;                
+            }
+            
+        }
+        
+        string plaintext = get_string("plaintext: ");
+        printf("ciphertext: ");
+        int ciphertext[100] = {0};
+        int lenPlain = strlen(plaintext);
+        
+        for (i = 0; i < lenPlain; i++)
+        {
+            int p = plaintext[i];
+            int c = ciphertext[i];
+            
+            if ((p >= 'A') && (p <= 'Z'))
+            {
+                c = ((((p - 65) + key) % 26) + 65);
+                printf("%c", c); 
+            }
+            
+            else if ((p >= 'a') && (p <= 'z'))
+            {
+                c = ((((p - 97) + key) % 26) + 97);
+                printf("%c", c); 
+            }
+            
+            else
+            {
+                printf("%c", p);
+            }
+        }
+        
+        printf("\n");
+    } 
+        
+    else 
+    {
+        printf("Usage: ./caesar key\n");
+        return 1;
+    }
+}
