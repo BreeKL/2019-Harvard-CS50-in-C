@@ -1,0 +1,104 @@
+/**
+ * This is a program to create a vigenere 
+ * cypher based on user input in the command line
+ **/
+
+#include <cs50.h>
+#include <stdio.h>
+#include <string.h>
+
+int main(int argc, string argv[])
+{
+    if (argc == 2) //make sure correct number of arguments are entered
+    {
+        int i, j;
+        int argvCount = 0;
+
+        
+        for (i = 0; i < 15; i++) //make sure keyword argument is made up of letters and count number of letters in keyword
+        {            
+            int arg = argv[1][i];
+            
+            if (((arg >= 'A') && (arg <= 'Z')) || ((arg >= 'a') && (arg <= 'z')))
+            {
+                argvCount++;
+            }
+            
+            else if (arg == '\0')
+            {
+                break;
+            }
+            
+            else
+            {
+                printf("Usage: ./vigenere <keyword>\n");
+                return 1;
+            }
+        }
+        
+        string plainText = get_string("plaintext:  ");
+        printf("ciphertext: ");
+        int lenPlainText = strlen(plainText);
+        int cipherText[150] = {0};
+        int k;
+        
+        for (i = 0, j = 0; i < lenPlainText; i++, j++) //loop to cyper plaintext
+        {
+            int arg = argv[1][j];
+            int p = plainText[i];
+            int c = cipherText[i];
+            int letter;
+            int shift;
+            
+            if (j == argvCount - 1) // makes sure to repeat from beginning of keyword if plaintext is longer
+            {
+                j = -1;
+            }
+            
+            if ((p == ' ') || (p == ','))
+            {
+                j = j - 1;
+            }
+                     
+            
+            if ((arg >= 'A') && (arg <= 'Z')) //figure out shift of uppercase letters of keyword
+            {
+                shift = (arg - 65);
+            }
+
+            if ((arg >= 'a') && (arg <= 'z')) //figure out shift of lowercase letters of keyword
+            {
+                shift = (arg - 97);
+            }
+            
+            
+            if ((p >= 'A') && (p <= 'Z')) //cypher uppercase letters
+            {
+                letter = ((((p - 65) + shift) % 26) + 65);
+                c = letter;
+                printf("%c", c);       
+            }
+            
+            if ((p >= 'a') && (p <= 'z')) //cypher lowercase letters
+            {
+                letter = ((((p - 97) + shift) % 26) + 97);
+                c = letter;
+                printf("%c", c);       
+            }
+            
+            if ((p < 'A') || ((p > 'Z') && (p < 'a')) || (p > 'z')) //copy any characters that are not letters
+            {
+                c = p;
+                printf("%c", c);
+            }
+        }
+        printf("\n");
+
+    }
+    
+    else
+    {
+        printf("Usage: ./vigenere <keyword>\n");
+        return 1;
+    }
+}
